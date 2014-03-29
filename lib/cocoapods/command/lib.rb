@@ -56,6 +56,19 @@ module Pod
         def clone_template
           UI.section("Creating `#{@name}` Pod") do
             git!"clone '#{template_repo_url}' #{@name}"
+
+            if @template_url.nil?
+              UI.puts "Do you want it to be Mac/iOS/Both?"
+              project_type = UI.gets.chomp
+              if project_type.downcase == "ios"
+                FileUtils.rm_rf("#{@name}/Classes/osx")
+              elsif project_type.downcase == "osx"
+                FileUtils.rm_rf("#{@name}/Classes/ios")
+              end
+            end
+
+          UI.puts "creating a #{project_type} project"
+          
           end
         end
 
